@@ -1,25 +1,45 @@
 import React, { useState } from "react";
-import { Link, } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Notebook } from "lucide-react";
+import { useAuth } from "../context/AuthContext"; // ✅ Match your actual folder
 
 function Signup() {
-   
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [loading, setLoading] = useState(false); // ✅ boolean
+    const [error, setError] = useState("");
 
-    const handleSubmit = (e) => {
+    const { signup } = useAuth(); // ✅ lowercase 's'
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => { // ✅ added 'async'
         e.preventDefault();
+        setError('');
+
         // Basic validation
-        if (password !== confirmPassword) {
-            alert("Passwords do not match!");
-            return;
+        if (!email || !password || !confirmPassword) {
+            return setError("Please fill in all fields");
         }
-        // Handle signup logic here (e.g., Firebase)
-        console.log("Signup attempt with:", { name, email, password });
-        // After successful signup, redirect to login or dashboard
-        // navigate("/login");
+
+        if (password !== confirmPassword) {
+            return setError("Password do not match");
+        }
+
+        if (password.length < 6) {
+            return setError("Password must be 6 characters or more");
+        }
+
+        try {
+            setLoading(true);
+            await signup(email, password); // ✅ lowercase 's'
+            navigate("/dashboard");
+        } catch (err) {
+            setError('Failed to create account: ' + (err.message || 'Please try again'));
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -30,6 +50,12 @@ function Signup() {
                     <h2 className="text-2xl font-bold text-gray-900">Create your account</h2>
                     <p className="text-gray-600">Start capturing your ideas today</p>
                 </div>
+
+                {error && (
+                    <div className="bg-red-50 text-red-700 p-3 rounded-md mb-4 text-sm">
+                        {error}
+                    </div>
+                )}
 
                 <form onSubmit={handleSubmit}>
                     {/* Full Name */}
@@ -100,9 +126,12 @@ function Signup() {
 
                     <button
                         type="submit"
-                        className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors font-medium"
+                        disabled={loading}
+                        className={`w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors font-medium ${
+                            loading ? 'opacity-70 cursor-not-allowed' : ''
+                        }`}
                     >
-                        Create Account
+                        {loading ? 'Creating account...' : 'Create Account'}
                     </button>
                 </form>
 

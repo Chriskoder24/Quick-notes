@@ -1,16 +1,36 @@
-import React, { useState } from "react"
-import { Link } from "react-router-dom"
-import { Notebook } from "lucide-react"
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom"; // ✅ Added useNavigate
+import { Notebook } from "lucide-react";
+import { useAuth } from "../context/AuthContext"; // ✅ Added useAuth
 
 function Login() {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false); // ✅ Added loading state
+    const [error, setError] = useState('');         // ✅ Added error state
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        // Handle login logic here
-        console.log('Login attempt with:', { email, password })
-    }
+    const { login } = useAuth(); // ✅ Get login function from AuthContext
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => { // ✅ Made async
+        e.preventDefault();
+        setError('');
+
+        // Basic validation
+        if (!email || !password) {
+            return setError("Please fill in all fields");
+        }
+
+        try {
+            setLoading(true);
+            await login(email, password); // ✅ Call Firebase login
+            navigate("/dashboard");        // ✅ Redirect to dashboard
+        } catch (err) {
+            setError('Failed to sign in: ' + (err.message || 'Please try again'));
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="max-w-md mx-auto mt-10">
@@ -20,6 +40,13 @@ function Login() {
                     <h2 className="text-2xl font-bold text-gray-900">Welcome back!</h2>
                     <p className="text-gray-600">Sign in to access your Notes</p>
                 </div>
+
+                {/* ✅ Error message display */}
+                {error && (
+                    <div className="bg-red-50 text-red-700 p-3 rounded-md mb-4 text-sm">
+                        {error}
+                    </div>
+                )}
 
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
@@ -52,11 +79,15 @@ function Login() {
                         />
                     </div>
 
-                    <button 
-                        type="submit" 
-                        className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors font-medium"
+                    {/* ✅ Button with loading state */}
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className={`w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors font-medium ${
+                            loading ? 'opacity-70 cursor-not-allowed' : ''
+                        }`}
                     >
-                        Sign In
+                        {loading ? 'Signing in...' : 'Sign In'}
                     </button>
                 </form>
 
@@ -68,7 +99,7 @@ function Login() {
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
-export default Login
+export default Login;
