@@ -1,9 +1,14 @@
 import React from 'react'
+import NoteForm from '../components/NoteForm'
+import Notecard from '../components/NoteCard'
 
 
 function Dashboard() {
   return (
-    <div>This is the Dashboard</div>
+    <>
+    <NoteForm/>
+    <Notecard/>
+    </>
   )
 }
 
