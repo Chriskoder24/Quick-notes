@@ -1,3 +1,4 @@
+import React from 'react';  // ✅ ADD THIS LINE - FIXES THE ERROR!
 import { createContext, useContext, useState, useEffect } from "react";
 import {
     createUserWithEmailAndPassword,
@@ -5,9 +6,7 @@ import {
     signOut,
     onAuthStateChanged
 } from 'firebase/auth';
-import { auth } from "../firebaseconfig"; // <-- FIXED: Changed to ../ (assuming firebaseconfig is in src)
-
-// REMOVED the unused 'User' import from lucide-react
+import { auth } from "../firebaseconfig";
 
 const AuthContext = createContext();
 
@@ -20,7 +19,6 @@ export function AuthProvider({ children }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
-    // Optional helper to clear errors
     function clearError() {
         setError('');
     }
@@ -56,7 +54,7 @@ export function AuthProvider({ children }) {
     }
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => { // <-- FIXED: Lowercase 'user'
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
             setCurrentUser(user);
             setLoading(false);
         });
@@ -70,7 +68,7 @@ export function AuthProvider({ children }) {
         login,
         error,
         loading,
-        clearError // <-- Added optional helper
+        clearError
     };
 
     return (
