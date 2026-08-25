@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Notebook } from "lucide-react";
-import { useAuth } from "../context/AuthContext"; // ✅ Match your actual folder
+import { useAuth } from "../Context/AuthContext"; // ✅ Match your actual folder
 
 function Signup() {
     const [name, setName] = useState("");

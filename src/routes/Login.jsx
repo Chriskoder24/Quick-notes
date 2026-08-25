@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // ✅ Added useNavigate
 import { Notebook } from "lucide-react";
-import { useAuth } from "../context/AuthContext"; // ✅ Added useAuth
+import { useAuth } from "../Context/AuthContext"; // ✅ Added useAuth
 
 function Login() {
     const [email, setEmail] = useState('');

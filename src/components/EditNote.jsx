@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebaseconfig";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../Context/AuthContext";
 import { PenLine, X } from "lucide-react";
 
 function EditNote({ note, onClose, onUpdate }) { // ✅ Receives onUpdate

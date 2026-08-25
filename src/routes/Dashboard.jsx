@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import NoteForm from '../components/NoteForm';
-import Notecard from '../components/Notecard'; // ✅ Check case sensitivity!
+import Notecard from '../components/NoteCard'; // ✅ Check case sensitivity!
 import EditNote from '../components/EditNote'; // ✅ Import EditNote
 import { db } from '../firebaseconfig';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../Context/AuthContext';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { StickyNote, FileWarning, Loader2 } from 'lucide-react';
 

@@ -1,7 +1,7 @@
 import React, {useState} from "react"
 import { collection, addDoc, serverTimestamp } from "firebase/firestore"
 import { db } from "../firebaseconfig"
-import { useAuth } from "../context/AuthContext"
+import { useAuth } from "../Context/AuthContext"
 import { PenLine } from "lucide-react"
 
 

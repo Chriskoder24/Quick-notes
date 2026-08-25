@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { doc, deleteDoc } from 'firebase/firestore';
 import { db } from "../firebaseconfig";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../Context/AuthContext";
 import { Trash2, PenLine, Clock } from "lucide-react";
 
 function Notecard({ note, onDelete, onEdit }) {
