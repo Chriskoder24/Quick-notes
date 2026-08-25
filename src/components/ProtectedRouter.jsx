@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // Match your actual folder case
+import { useAuth } from '../Context/AuthContext'; // Match your actual folder case
 
 function ProtectedRoute({ children }) {
     const { currentUser, loading } = useAuth();
